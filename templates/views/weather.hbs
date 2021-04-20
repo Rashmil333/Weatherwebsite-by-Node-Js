@@ -1,0 +1,97 @@
+<html>
+	<head><title>My node js Weather app</title>
+
+	 <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="styling.css">
+
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	</head>
+	<body>
+		{{>header}}
+		<div class="container" style="margin-top:10%">
+			<div class="row">
+				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+
+					<input id="searchcity" type="text" placeholder="Search city"/><button id="send">Check</button><br/><br/><br/>
+					<p id="weathericon"></p>
+					<div><div style="float:left"><i class="fa fa-street-view fa-4x"></i></div><div><h2 id="city">City</h2></div></div><br/>
+					<h1 style="color:dodgerblue"><span id="temprature">Temprature</span><sup>o</sup>C</h1><br/>
+					<h3>Max Temp: <span id="tempmax"></span></h3><br/>
+					<h3>Min Temp: <span id="tempmin"></span></h3><br/>
+					
+					
+
+
+					
+
+				</div>
+				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+						<img style="width:600px" src="https://cdn.dribbble.com/users/1353252/screenshots/7430583/media/f456446ffc1c9a1608b94d6d136dbc0d.gif"/>
+
+				</div>
+			</div>
+		</div>
+		{{>footer}}
+
+	<script type="text/javascript">
+	var city=document.getElementById('city');
+	var temprature=document.getElementById('temprature');
+	var tempmax=document.getElementById('tempmax');
+	var tempmin=document.getElementById('tempmin');
+	var button=document.getElementById('send');
+	var icon=document.getElementById('weathericon');
+	
+	
+	
+
+	let realdata="";
+
+	const getnewquotes=()=>{
+		console.log(realdata.main);
+		city.innerText=realdata.name;
+		temprature.innerText=((realdata.main.temp)-273.15).toFixed(0);
+		tempmax.innerText=realdata.main.temp_max;
+		tempmin.innerText=realdata.main.temp_min;
+		
+		const tempo=((realdata.main.temp)-273.15).toFixed(0);
+		if(tempo>=28){
+			icon.innerHTML="<i class='fa fa-sun-o fa-3x'></i>";
+		}
+		else if(tempo<28){
+			icon.innerHTML="<i class='fa fa-cloud fa-3x'></i>";
+		}
+
+		
+
+		
+		
+
+	}
+	const getquotes=async ()=>{
+		var data=document.getElementById('searchcity').value;
+		const api=`http://api.openweathermap.org/data/2.5/weather?q=${data}&appid=886705b4c1182eb1c69f28eb8c520e20`;
+		try{
+			let data=await fetch(api);
+			realdata=await data.json();
+			// console.log(realdata[10].author,realdata[10].text);
+			getnewquotes();
+		}
+		catch (error){
+
+		}
+
+		};
+		button.addEventListener("click",getquotes);
+		getquotes();
+		
+		
+		
+
+	</script>
+	</body>
+</html>
